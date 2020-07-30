@@ -7,7 +7,7 @@ function CadastrarCategoria() {
     const valoresIniciais = {
         nome: '',
         descricao: '',
-        cor: '#000'
+        cor: '#ffffff'
     }
 
     // quando se coloca a variável entre chaves, é para desestruturar
@@ -20,16 +20,16 @@ function CadastrarCategoria() {
         setValues({
             ...values,
             // key [nome dos campos do form]
-            [key]: value
+            [key]: value,
         })
     }
 
     // método para pegar dinamicamente o 'name' do form e seu respectivo valor
     // para então fazer o set na função
     function handleChange(evento) {
-        const { getAttribute, value } = evento.target;
+        const { name, value } = evento.target;
         setValue(
-            getAttribute('name'),
+            name,
             value
         );
     }
@@ -58,7 +58,7 @@ function CadastrarCategoria() {
 
                 <FormField
                     label="Descrição:"
-                    type="text"
+                    type="textarea"
                     name="descricao"
                     value={values.descricao}
                     onChange={handleChange}
