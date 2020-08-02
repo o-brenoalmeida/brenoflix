@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
+
 
 
 function CadastrarCategoria() {
@@ -12,31 +14,15 @@ function CadastrarCategoria() {
     cor: '#ffffff',
   };
 
+  const { handleChange, values, clearForm } = useForm(valoresIniciais);
+
   // quando se coloca a variável entre chaves, é para desestruturar
   // o que é recebido
   const [categorias, setCategorias] = useState([]);
-  const [values, setValues] = useState(valoresIniciais);
 
-  function setValue(key, value) {
-    setValues({
-      ...values,
-      // key [nome dos campos do form]
-      [key]: value,
-    });
-  }
 
-  // método para pegar dinamicamente o 'name' do form e seu respectivo valor
-  // para então fazer o set na função
-  function handleChange(evento) {
-    const { name, value } = evento.target;
-    setValue(
-      name,
-      value,
-    );
-  }
 
   useEffect(() => {
-    console.log('alooo');
     const URL = window.location.hostname.includes('localhost')
       ?
       'http://localhost:8080/categorias'
@@ -44,6 +30,7 @@ function CadastrarCategoria() {
       'http://brenoflix.herokuapp.com/categorias'
       ;
 
+    console.log(URL);
     fetch(URL)
       .then(async (respostaDoServidor) => {
         const resposta = await respostaDoServidor.json();
@@ -52,23 +39,6 @@ function CadastrarCategoria() {
         ]);
       });
 
-    // setTimeout(()=>{
-    //   setCategorias([
-    //     ...categorias,
-    //     {
-    //       "id": 1,
-    //       "nome": "Front End",
-    //       "descricao": "uma categoria massa",
-    //       "cor": "#cbd1ff"
-    //     },
-    //     {
-    //       "id": 2,
-    //       "nome": "Back End",
-    //       "descricao": "uma outra categoria massa",
-    //       "cor": "#cbd1ff"
-    //     }
-    //   ]);
-    // }, 4 * 1000);
   }, []);
 
   return (
@@ -85,12 +55,12 @@ function CadastrarCategoria() {
           values,
         ]);
 
-        setValues({ valoresIniciais });
+        clearForm();
       }}
       >
 
         <FormField
-          label="Nome"
+          label="Nome da Categoria"
           type="text"
           name="nome"
           value={values.nome}
@@ -127,8 +97,8 @@ function CadastrarCategoria() {
       <ul>
         {categorias.map((categoria) => (
 
-          <li key={`${categoria.nome}`}>
-            {categoria.nome}
+          <li key={`${categoria.titulo}`}>
+            {categoria.titulo}
           </li>
         ))}
       </ul>
